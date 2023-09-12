@@ -13,4 +13,10 @@ public class PrintUtil {
             System.out.println(Arrays.toString(row));
         }
     }
+
+    public static void printTwoDimArray(int[][] array) {
+        for (int[] row : array) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
 }
