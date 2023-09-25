@@ -1,5 +1,6 @@
 package com.moon.algorithms.ch1fundamentals.ch1_1;
 
+import com.moon.algorithms.ch1fundamentals.ch1_2.Counter;
 import com.moon.algorithms.std.In;
 import com.moon.algorithms.std.StdDraw;
 import com.moon.algorithms.std.StdIn;
@@ -25,6 +26,25 @@ public class BinarySearch {
         int hi = a.length - 1;
         // find key in arr[lo, hi]
         while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (key < a[mid]) {
+                hi = mid - 1;
+            } else if (key > a[mid]) {
+                lo = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+
+        return -1;
+    }
+
+    public static int rank(int key, int[] a, Counter counter) {
+        int lo = 0;
+        int hi = a.length - 1;
+        // find key in arr[lo, hi]
+        while (lo <= hi) {
+            counter.increment();
             int mid = lo + (hi - lo) / 2;
             if (key < a[mid]) {
                 hi = mid - 1;
