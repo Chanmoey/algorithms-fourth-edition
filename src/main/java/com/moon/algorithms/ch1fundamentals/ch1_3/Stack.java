@@ -20,6 +20,24 @@ public class Stack<E> implements Iterable<E>{
     private Node first;
     private int n;
 
+    public Stack() {
+
+    }
+
+    public Stack(Stack<E> s) {
+        this.n = 0;
+        Stack<E> temp = new Stack<>();
+        while (!s.isEmpty()) {
+            temp.push(s.pop());
+        }
+
+        while (!temp.isEmpty()) {
+            E e = temp.pop();
+            this.push(e);
+            s.push(e);
+        }
+    }
+
     public boolean isEmpty() {
         return this.n == 0;
     }
@@ -91,11 +109,13 @@ public class Stack<E> implements Iterable<E>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("top -> ");
         Node cur = first;
         while (cur != null) {
             sb.append(cur.e).append(" -> ");
             cur = cur.next;
         }
+        sb.append("end");
         return sb.toString();
     }
 }

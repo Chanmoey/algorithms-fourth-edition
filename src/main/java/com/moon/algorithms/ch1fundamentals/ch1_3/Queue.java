@@ -19,6 +19,23 @@ public class Queue<E> {
     private Node last;
     private int n;
 
+    public Queue() {
+    }
+
+    public Queue(Queue<E> q) {
+        this.n = 0;
+        Queue<E> temp = new Queue<>();
+        while (!q.isEmpty()) {
+            temp.enqueue(q.dequeue());
+        }
+
+        while (!temp.isEmpty()) {
+            E e = temp.dequeue();
+            this.enqueue(e);
+            q.enqueue(e);
+        }
+    }
+
     public boolean isEmpty() {
         return this.n == 0;
     }
