@@ -78,6 +78,24 @@ public class Queue<E> {
         return e;
     }
 
+    public void connect(Queue<E> other) {
+        if (other.isEmpty()) {
+            return;
+        }
+
+        if (isEmpty()) {
+            this.first = other.first;
+            this.last = other.last;
+            this.n = other.size();
+            return;
+        }
+
+        this.n += other.size();
+        while (!other.isEmpty()) {
+            this.enqueue(other.dequeue());
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

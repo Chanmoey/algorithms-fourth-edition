@@ -1,5 +1,6 @@
 package com.moon.algorithms.ch1fundamentals.ch1_3;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /**
@@ -19,13 +20,16 @@ public class Stack<E> implements Iterable<E>{
 
     private Node first;
     private int n;
+    private int modify;
 
     public Stack() {
-
+        this.n = 0;
+        this.modify = 0;
     }
 
     public Stack(Stack<E> s) {
         this.n = 0;
+        this.modify = 0;
         Stack<E> temp = new Stack<>();
         while (!s.isEmpty()) {
             temp.push(s.pop());
@@ -51,6 +55,7 @@ public class Stack<E> implements Iterable<E>{
         first = new Node(e);
         first.next = oldFirst;
         this.n++;
+        this.modify++;
     }
 
     public E pop() {
@@ -62,6 +67,7 @@ public class Stack<E> implements Iterable<E>{
         first = first.next;
         this.n--;
         del.next = null; // Help GC
+        this.modify++;
         return e;
     }
 
@@ -84,6 +90,28 @@ public class Stack<E> implements Iterable<E>{
         return res;
     }
 
+    public void connect(Stack<E> other) {
+        if (other.isEmpty()) {
+            return;
+        }
+
+        if (isEmpty()) {
+            this.first = other.first;
+            this.n = other.size();
+            return;
+        }
+
+        this.n += other.size();
+        Stack<E> temp = new Stack<>();
+        while (!other.isEmpty()) {
+            temp.push(other.pop());
+        }
+
+        while (!temp.isEmpty()) {
+            this.push(temp.pop());
+        }
+    }
+
     @Override
     public Iterator<E> iterator() {
         return new ListStackIterator();
@@ -92,14 +120,21 @@ public class Stack<E> implements Iterable<E>{
     private class ListStackIterator implements Iterator<E> {
 
         private Node cur = first;
+        private final int modifyCount = modify;
 
         @Override
         public boolean hasNext() {
+            if (modifyCount != modify) {
+                throw new ConcurrentModificationException();
+            }
             return cur != null;
         }
 
         @Override
         public E next() {
+            if (modifyCount != modify) {
+                throw new ConcurrentModificationException();
+            }
             E e = cur.e;
             cur = cur.next;
             return e;
