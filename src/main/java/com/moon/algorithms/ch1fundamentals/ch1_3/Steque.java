@@ -28,6 +28,14 @@ public class Steque<E> {
 
     private int size;
 
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public int size() {
+        return this.size;
+    }
+
     public void push(E e) {
         Node node = new Node(e);
         node.next = dummyHead.next;
